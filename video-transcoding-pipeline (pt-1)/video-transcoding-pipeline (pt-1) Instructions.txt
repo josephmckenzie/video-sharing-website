@@ -112,4 +112,18 @@ In this first part we will make our video trans-coding service and pipeline on A
   
   ----------------------------------------------------------------------------------------------------------------------------------
   
-     
+   
+
+5. Next we will need to setup an Elastic Transcoder pipeline, using Amazon Elastic Transcoder lets you convert any digital media stored in an Amazon S3 Bucket into the audio and video codecs and the containers required by various consumer playback devices.
+
+  A. Click the Services tab at the top of the page and underneath of the Application Services section choose Elastic Transcoder.
+  B. Click on "Create a New Pipeline" to begin creating the pipeline that will take a uploaded video and transcode in to a usable format for the wide array of people and devices out there.
+  C. Give your pipeline a name and specify the bucket where the inital video is uploaded to (yourcoolname-upload-bucket).
+  D. Leave the IAM role as it is, which should be create console default role that is created automatically by Elastic Transcoder
+  E. Under Configuration for Amazon S3 Bucket for Transcoded Files and Playlists choose the bucket (yourcoolname-transcoded-videos) which will contain the transcoded videos once going through the pipeline.
+  F. Under Storage type choose Standard.
+  G. Next we will want to choose a bucket to store thumbnails even though we are not yet using them at this time, Choose the same settings as we did for the transcoded-videos bucket.
+  H. Next we can add notifactions or encryption but for now lets leave the settings as they are.
+  I. Click "Create Pipeline" to create our pipeline using the settings specified. 
+  J.Take a look at the summary for the pipeline you just created, and WRITE DOWN THE PIPELINE ID you will need it again and soon.
+
