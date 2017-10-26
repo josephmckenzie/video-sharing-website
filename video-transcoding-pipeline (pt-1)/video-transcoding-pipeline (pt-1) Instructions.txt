@@ -12,11 +12,104 @@ In this first part we will make our video trans-coding service and pipeline on A
        
        If you can I would recommend keeping any services or resources that may need to interact with one another in the same region as each other, however any and all IAM (Identity and Access Management) roles or polices need to be within the same region as the AWS service(s) you are using regardless. 
             
-2.In this step we will create 2 buckets 
+
+-------------------------------------------------------------------------------------------------------------
+
+2. In this step we will create 2 buckets 
+  
   A. We start by clicking the "Create bucket" button .
   B. Give your bucket a name, the first bucket we make is going to hold our videos after being uploaded and before the are trans-coded so lets give it a memorable name such as "youruniqueandcoolname-video-upload" so we won't forget what a bucket may contain later on.
   C. Pick a region for your bucket, and remember that we want to choose N. Virginia (us-east-1) for our region.
   D. Click create to create your bucket.
   E. Repeat the process for the bucket which will hold our videos that have been uploaded and through tans-coding process. Give the bucket a unique name you will remember, choose the region and hit "Create bucket" once again.
   
+
+--------------------------------------------------------------------------------------------------------------
+
+3. Having created our buckets we need to create the correct policy needed by our bucket which will allow it to be publicly accessed
+
+  A. Click on the name of the bucket which holds our post tans-coded videos (the second bucket we made)
+  B. Click the premissons tab, click on bucket policy in order to give our bucket the premssions needed to access and view the video after having been trans-coded. You can use the below example which can also be found in s3bucket-required-rolesandpolicies.txt . 
+    
+    -Example:
+      
+      {
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "AddPerm",
+			"Effect": "Allow",
+			"Principal": "*",
+			"Action": "s3:GetObject",
+			"Resource": "arn:aws:s3:::<YOUR-BUCKET-NAME>/*"
+		}
+	]
+}
+     
+   * Make sure to remember to rename <YOUR-BUCKET-NAME> to the name you gave to your trans-coded videos bucket *
+   
+   
   
+   
+  ----------------------------------------------------------------------------------------------------------------------
+ 
+ 
+ 4. Next we	need to	create an IAM role that will allow access	to S3 and to the Elastic Transcoder from a future lambda which we will create soon (Hooray..... lambdas again !!!!!, for real though they can be pretty cool)
+ 
+   A. Start off by going to the IAM service which can be found by clicking the services tab on the menu bar at the top of the page *    * If you are having trouble locating it look under the Security, Identity & Compliance section.
+   B. Choose AWS Service (Should be pre-selected) and choose Lambda and click the "Next:Premissons" button.
+   C. Click the checkboxes next to the following policies.
+      C1. AWSLambdaExecute	
+        C1-Policy.
+          This should be created for you automatically by amazon, but if it doesn't for some reason or if you just want to know what it looks like in JSON format which all roles and policies are saved in. You can also find this located in the s3bucket-required-rolesandpolicies.txt file.
+          
+          {
+      "Version": "2012-10-17",
+      "Statement": [
+          {
+              "Effect": "Allow",
+              "Action": [
+                  "logs:*"
+              ],
+              "Resource": "arn:aws:logs:*:*:*"
+          },
+          {
+              "Effect": "Allow",
+              "Action": [
+                  "s3:GetObject",
+                  "s3:PutObject"
+              ],
+              "Resource": "arn:aws:s3:::*"
+          }
+      ]
+  }
+      C2. AmazonElasticTranscoderJobsSubmitter
+        C2-Policy.
+          This also should be created for you automatically by amazon, but if it did't for some reason or if you just wanted to see what it looked like in JSON format. You can also find this located in the s3bucket-required-rolesandpolicies.txt file.
+          
+          {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "elastictranscoder:Read*",
+                "elastictranscoder:List*",
+                "elastictranscoder:*Job",
+                "elastictranscoder:*Preset",
+                "s3:List*",
+                "iam:List*",
+                "sns:List*"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
+        }
+    ]
+}
+         
+   D. Click "Next:Review" to give it a name, remember to give it a name that is clear what it is doing or the services being accessed (such as lambda-s3-execution-role) Give it a brief description and review that everything is correct before clicking on the "create role" button and making your new role, if it looks good click "Create Role"
+   E. You will be taken to the roles section where you can review the role you just made by selecting the role name you chose, here you can review the policies you added to this or any role. You can also get to the role section by clicking the roles tab loated on the left side of the page.
+  
+  
+  ----------------------------------------------------------------------------------------------------------------------------------
+  
+     

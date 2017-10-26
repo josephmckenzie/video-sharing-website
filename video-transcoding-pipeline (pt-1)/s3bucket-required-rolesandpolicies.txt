@@ -1,0 +1,68 @@
+
+# Bucket Policy (needed to allow public read access to our trans-coded videos)
+  * Remember to change <YOUR-BUCKET-NAME> to the actual bucket name you created.
+
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "AddPerm",
+			"Effect": "Allow",
+			"Principal": "*",
+			"Action": "s3:GetObject",
+			"Resource": "arn:aws:s3:::<YOUR-BUCKET-NAME>/*"
+		}
+	]
+}
+
+
+# Amazon IAM Policies and Roles
+
+  - The 2 below policies should have been made for you by Amazon by just selecting the correct policies at role completion time, but if not or you want to see what they look like you can find the JSON formatted policies below
+
+
+  # AmazonElasticTranscoderJobsSubmitter Policy
+
+
+  {
+      "Version": "2012-10-17",
+      "Statement": [
+          {
+              "Action": [
+                  "elastictranscoder:Read*",
+                  "elastictranscoder:List*",
+                  "elastictranscoder:*Job",
+                  "elastictranscoder:*Preset",
+                  "s3:List*",
+                  "iam:List*",
+                  "sns:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+          }
+      ]
+  }
+
+
+  # AWSLambdaExecute Policy
+
+  {
+      "Version": "2012-10-17",
+      "Statement": [
+          {
+              "Effect": "Allow",
+              "Action": [
+                  "logs:*"
+              ],
+              "Resource": "arn:aws:logs:*:*:*"
+          },
+          {
+              "Effect": "Allow",
+              "Action": [
+                  "s3:GetObject",
+                  "s3:PutObject"
+              ],
+              "Resource": "arn:aws:s3:::*"
+          }
+      ]
+  }
