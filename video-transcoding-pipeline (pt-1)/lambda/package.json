@@ -1,0 +1,20 @@
+{
+  "name": "joes-supercool-video-transcoder",
+  "version": "1.0.0",
+  "description": "This is a Lambda function that creates a job that transcoding videos that have been uploaded to an S3 bucket",
+  "main": "index.js",
+  "scripts": {
+    "test": "run-local-lambda --file index.js --event tests/event.json",
+    "deploy": "aws lambda update-function-code --function-name NODE_ENV=ARN --zip-file fileb://video-transcoder-lambda.zip",
+    "predeploy": "zip -r video-transcoder-lambda.zip * -x *.zip *.json *.log"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.3.2",
+    "dotenv": "^4.0.0"
+  },
+  "author": "Joseph Mckenzie",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "run-local-lambda": "^1.1.0"
+  }
+}

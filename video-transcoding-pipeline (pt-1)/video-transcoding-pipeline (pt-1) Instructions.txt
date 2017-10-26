@@ -127,3 +127,43 @@ In this first part we will make our video trans-coding service and pipeline on A
   I. Click "Create Pipeline" to create our pipeline using the settings specified. 
   J.Take a look at the summary for the pipeline you just created, and WRITE DOWN THE PIPELINE ID you will need it again and soon.
 
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+6. We next have the pleasure of creating our first lambda function (YEAAAAA!!! Lambdas are cool)
+  
+  A. Proceed to Lambda service located under the Compute section in the list of services.
+  B. Click on Author from scratch
+  C. Give your lambda a name, remember to be descriptive and as always WRITE IT DOWN somewhere and store in a secure place.
+  D. Under the Role section choose "eisting role"
+  E. Under the existing role section choose the role that we created earlier, which we named lambda-s3-execution-role
+  F. Click on "create function" to create our first lambda for our project
+  G. Once the Lambda is created leave the settings as the are for now or if you choose to a pick a different node runtime, however for now leave code entry type the way it is for now and leave the Handler name the default (index.handler) unless you know more about it and if so cool feel free to change it to whatever you like but make sure to remember to change it through out the code too)
+  H. Click on the configuration tab and Scroll down under Basic settings change the timeout of the Lambda to 0 min 30 sec, this is to ensure if our video transcoding takes longer then it should have it doesn't kep running our lambda wasting valuable server uptime and resources saving you money.
+  I. Finally we can start to deploy the actual lambda code to Amazon. For more detail, tips and other cool tidbits on what is happening within our lambda function checkout the index.js file.
+  J. We first start by opening up the terminal and navagating to the directory where lambda code file are stored and running the command "npm install" to install any needed node modules and dependicies.
+  K. Next we can run "npm	run	predeploy" which runs the predeploy script located in the package.json file zipping up the required files for our lambda while ignoring files or folders we dont want or need to use.
+  L. Remember to add node_modules to your gitignore file as the node modules folder tends to get big and there is no reason to deploy it to github when we can just run a npm install when needed for any modules and dependecies needed.
+  M. Back in Amazon go back to our Lambda function we made and if you didnt earlier chnage the node rune time to 4.3
+  N. Looking under the code entry type choose upload a zip file and choose the zip file that was created with "npm run predeploy"
+  O. Lets finally add in our enviromental variables buy clicking on the Environment variables tab.
+    Oa. ELASTIC_TRANSCODER_REGION = us-east-1 (in a key,value pair )
+    Ob. ELASTIC_TRANSCODER_PIPELINE_ID = PIPELINEIDGOESHERE (key,value pair as well) We got this value earier when we first made our pipeline and you remembered to write down right?"
+    Oc. ARN = YOURLAMBDAARN, Add in our env for the ARN located inside of our json file hope it works (I'll update this shortly when I find out.)
+  P. Click on the "add triggers" tab and click on the square dashed box to add a trigger.
+  Q. Scroll the list of triggers and pick S3.
+      Q1. Pick the bucket that the trigger will watch (youruniqueandcoolname-video-upload) for a specified action
+      Q2. The action we want to watch for is "Object Created (ALL)"
+      Q3. Press "Submit" to link a trigger to your lambda.
+  R. Having done evrything so far lets upload a video to test out, we will do this one manually through the S3 UI and navigate to the "youruniqueandcoolname-video-upload" bucket.
+  S. Click on the upload button then on the  "Add files" button to choose the file you want upon choosing the file you want click the "Upload files" button to start the uploading process to your S3 bucket.
+  T. You should have the uploaded file in your "youruniqueandcoolname-video-upload" bucket, and after giving it a couple of minutes we can check our "youruniqueandcoolname-transcoded-videos" bucket to see the 3 new files that should have been created by the process.
+  U. Having checked the "youruniqueandcoolname-transcoded-videos" we can see 3 files located within a folder with the name of the video we just uploaded containing videos with different bitrates and formats to pick from that will be shown based on users device.
+ 
+ 
+ -----------------------------------------------------------------------------------------------------------------------------------
+ 
+ 8. Congradulations, You now have your very own serverless	video	transcoding	pipeline which is pretty awesome.
+ 
+    So far we have used the following Amazon services, a S3 bucket (for storage of videos before and after transcoding), a Lambda that contains our code calling the Elastic Transcoder API to properly transcode our videos in to the correct formats, interacted with Amazon's Elastic Transcoder (that does the actual transcoding of a video after upload to  "youruniqueandcoolname-video-upload"'s bucket), a Lambda trigger that watches a S3 bucket for any upload, learned to create policies for our S3 bucket, made IAM roles and set policies upon that role and more.
+        
