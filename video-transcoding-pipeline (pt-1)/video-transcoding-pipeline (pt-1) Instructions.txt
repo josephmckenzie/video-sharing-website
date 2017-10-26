@@ -166,4 +166,20 @@ In this first part we will make our video trans-coding service and pipeline on A
  8. Congradulations, You now have your very own serverless	video	transcoding	pipeline which is pretty awesome.
  
     So far we have used the following Amazon services, a S3 bucket (for storage of videos before and after transcoding), a Lambda that contains our code calling the Elastic Transcoder API to properly transcode our videos in to the correct formats, interacted with Amazon's Elastic Transcoder (that does the actual transcoding of a video after upload to  "youruniqueandcoolname-video-upload"'s bucket), a Lambda trigger that watches a S3 bucket for any upload, learned to create policies for our S3 bucket, made IAM roles and set policies upon that role and more.
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+!!!!! BUT WAIT THERE IS MORE, I bet you are even more happy now then you were !!!!!
+    
+9. Lets work on the next steps to extend this awesome project even more.
+  A.We need to account for any file name with more then one period.
+  B. Only Accept avi, mp4, or mov file formats as anyother format will cause the Lambda function calling Elastic Transcoder API to fail, well because it cant transcode a nonvideo can it?
+  C. We will need to delete old files from the upload bucket which can be done a few ways, one way is to  make a daily trigger that calling a Lambda that will delete any bucket data that is older then say 24 hrs. 
+  D. Lets try and add transcoding for more types of resoultions and bit rates such as HLS and webm formats.
         
+        
+-------------------------------------------------------------------------------------------------------------------------------------
+
+10. Lets start off by fixing that nast issue with a file name that may contain more then one period in its name.
+   A.
