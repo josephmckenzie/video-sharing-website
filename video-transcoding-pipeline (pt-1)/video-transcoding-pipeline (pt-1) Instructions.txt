@@ -1,0 +1,22 @@
+In this first part we will make our video trans-coding service and pipeline on AWS.
+
+1. First go to AWS and log in,where we will start off by going to the S3 service which can be found in the list of storage services.
+   
+   * Make sure to create this and all other resources and services in (US-East-1) N. Virginia .
+      
+    ** I'm not sure yet as why we need to create all of our resources in N. Virginia, but by the end we will figure out what the reason behind this is.
+    
+       I remember when I created my first Alexa skill (to poke fun of my good friend Jon and cofounder of Mined Minds) that we had to keep everything needed in the N. Virginia region , My Jon says Alexa skill executes a lambda (fun fact: an Alexa skill is essentially just a Lambda, which we will learn to create later on in this project), and any lambda created for Alexa skills need to be located within the same region as the services that control her core logic which is N.Virginia (us-east-1).
+       
+       AWS services also tend to communicate more efficiently between each other when all resources & services are within the same region with some even requiring it, for example when creating an API using Amazon's API Gateway the API endpoint and the lambda need to be located within the same region as each other in order to be seen by one another.
+       
+       If you can I would recommend keeping any services or resources that may need to interact with one another in the same region as each other, however any and all IAM (Identity and Access Management) roles or polices need to be within the same region as the AWS service(s) you are using regardless. 
+            
+2.In this step we will create 2 buckets 
+  A. We start by clicking the "Create bucket" button .
+  B. Give your bucket a name, the first bucket we make is going to hold our videos after being uploaded and before the are trans-coded so lets give it a memorable name such as "youruniqueandcoolname-video-upload" so we won't forget what a bucket may contain later on.
+  C. Pick a region for your bucket, and remember that we want to choose N. Virginia (us-east-1) for our region.
+  D. Click create to create your bucket.
+  E. Repeat the process for the bucket which will hold our videos that have been uploaded and through tans-coding process. Give the bucket a unique name you will remember, choose the region and hit "Create bucket" once again.
+  
+  
