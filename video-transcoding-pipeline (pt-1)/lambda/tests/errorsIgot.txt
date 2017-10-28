@@ -1,0 +1,76 @@
+As I attempted to try and work out setting up a test and event for that test, the tutorial I worked from didnt include any tests, well at least yet, but don't you know it I just happen to LOVE tests ("Alexa Jon says"..........."TEST TEST TEST") so I'll make them as I go along just to make sure we can prove that our video transcoder and everything in its pipeline works correctly and as intended.
+
+But trying to make local lambda execution with a json file that mimicks a an upload to S3 and a response i worked through some errors . console.logs and cloudwatch logs helps a lot so put a lot of console.logs if you want its all good, it cant hurt and may even help.
+
+
+
+
+With require('dotenv').config(); in the index.js file i got the following error when running the tests.
+
+The event I first tried sending, after having looked in my cloudwatch logs from the one we manually uploaded I saw this event and figured it looked like the data we need thats being sent to Lambda, using that event data I mocked one up in a json format to mimick a upload to S3 that triggers our Lambda, which should in turn send a response back. 
+
+ - The values here have been changed, but this is the event data and structure I sent out. One of the console.logs we put in the code will show you your event data and it should look like this.
+
+{
+    "Records": [
+        {
+            "eventVersion": "2.0",
+            "eventSource": "aws:s3",
+            "awsRegion": "us-east-1",
+            "eventTime": "2017-10-26T20:55:37.317Z",
+            "eventName": "ObjectCreated:Put",
+            "userIdentity": {
+                "principalId": "A3S*****KR"
+            },
+            "requestParameters": {
+                "sourceIPAddress": "50.000.00.000"
+            },
+            "responseElements": {
+                "x-amz-request-id": "F56000000A",
+                "x-amz-id-2": "/wkEvw00000000Db5+Ao00000000w93rBDDgi3u00000000ViA="
+            },
+            "s3": {
+                "s3SchemaVersion": "1.0",
+                "configurationId": "a700003c-000b-4000-a896-aaf0000008",
+                "bucket": {
+                    "name": "josephmckenzie-yyyyyy-t000et6tt",
+                    "ownerIdentity": {
+                        "principalId": "A3S00000KR"
+                    },
+                    "arn": "arn:aws:s3:::josephmckenzie-0000454-v4444o4455454"
+                },
+                "object": {
+                    "key": "te545454000.mp4",
+                    "size": 449212,
+                    "eTag": "f255450000000b02866",
+                    "sequencer": "000000008090C"
+                }
+            }
+        }
+    ]
+}
+
+The error I recieved back
+
+{
+ errorMessage: 'The specified pipeline was not found: account=30000001, pipelineId=1000002-656565m.',
+ errorType: 'ResourceNotFoundException',
+  stack: 'ResourceNotFoundException: The specified pipeline was not found: account=32342342341, pipelineId=154234464712-1hyakm.\n    at Object.extractError (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/protocol/json.js:48:27)\n    at Request.extractError (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/protocol/rest_json.js:45:8)\n    at Request.callListeners (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/sequential_executor.js:105:20)\n    at Request.emit (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/sequential_executor.js:77:10)\n    at Request.emit (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/request.js:683:14)\n    at Request.transition (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/request.js:22:10)\n    at AcceptorStateMachine.runTo (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/state_machine.js:14:12)\n    at /home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/state_machine.js:26:10\n    at Request.<anonymous> (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/request.js:38:9)\n    at Request.<anonymous> (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/request.js:685:12)' 
+}
+
+
+When I ran the test again using the same json event as before but without require('dotenv').config(); in the index.js it would return this error saying that it no longer knew what the PipelineId was.So I checked places like the .env file , made sure everything was in correct location in the file tree,which all was correct so I checked around my errors and noticed this line
+
+stack: 'ResourceNotFoundException: The specified pipeline was not found: account=32342342341, pipelineId=154234464712-1hyakm.\n
+
+
+ {
+ errorMessage: 'Missing required key \'PipelineId\' in params',
+ errorType: 'MissingRequiredParameter',
+ stack: 'MissingRequiredParameter: Missing required key \'PipelineId\' in params\n    at ParamValidator.fail (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/param_validator.js:50:37)\n    at ParamValidator.validateStructure (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/param_validator.js:61:14)\n    at ParamValidator.validateMember (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/param_validator.js:88:21)\n    at ParamValidator.validate (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/param_validator.js:34:10)\n    at Request.VALIDATE_PARAMETERS (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/event_listeners.js:125:42)\n    at Request.callListeners (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/sequential_executor.js:105:20)\n    at callNextListener (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/sequential_executor.js:95:12)\n    at /home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/event_listeners.js:85:9\n    at finish (/home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/config.js:320:7)\n    at /home/joe/Documents/Joe\'s Stuff/video-sharing-website/video-transcoding-pipeline (pt-1)/lambda/node_modules/aws-sdk/lib/config.js:338:9'
+} 
+
+Notice how "pipelineId" and "PipelineId" in the errorMessage lines are not quite the same? I must have accidently captialized a P or forgot to somewhere, but you normally camelcase in javascript so its more likely that i put a big P somewhere I shouldn't have, lets find out where and fix it and see what happens next.
+
+
+

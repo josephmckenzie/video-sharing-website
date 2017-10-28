@@ -1,0 +1,39 @@
+{
+    "Records": [
+        {
+            "eventVersion": "2.0",
+            "eventSource": "aws:s3",
+            "awsRegion": "us-east-1",
+            "eventTime": "2017-10-28T06:10:11.321Z",
+            "eventName": "ObjectCreated:Put",
+            "userIdentity": {
+                "principalId": "A3SQWZZIUVQ8KR"
+            },
+            "requestParameters": {
+                "sourceIPAddress": "50.110.40.198"
+            },
+            "responseElements": {
+                "x-amz-request-id": "5C00132226D4EF90",
+                "x-amz-id-2": "gcmDFzoCO8XxJIAjFgTAnofxc3tJEbKeu8FJnQr9sk6HLGrKwaO6P/sWAfsMuSCWLiPUbffcenM="
+            },
+            "s3": {
+                "s3SchemaVersion": "1.0",
+                "configurationId": "a7ea2b3c-fd9b-4870-a896-aaf6036cb308",
+                "bucket": {
+                    "name": "josephmckenzie-pretranscoded-videos",
+                    "ownerIdentity": {
+                        "principalId": "A3SQWZZIUVQ8KR"
+                    },
+                    "arn": "arn:aws:s3:::josephmckenzie-pretranscoded-videos"
+                },
+                "object": {
+                    "key": "teecee-1of10000.mp4",
+                    "size": 449212,
+                    "eTag": "f255397244db5d67039d1e3af6b02858",
+                    "sequencer": "0059F41F433DC5A597"
+                }
+            }
+        }
+    ]
+}
+

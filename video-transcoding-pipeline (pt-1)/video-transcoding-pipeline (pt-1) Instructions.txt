@@ -182,4 +182,16 @@ In this first part we will make our video trans-coding service and pipeline on A
 -------------------------------------------------------------------------------------------------------------------------------------
 
 10. Lets start off by fixing that nast issue with a file name that may contain more then one period in its name.
-   A.
+    
+    !!! Updated this one to make it work when I working on the first challenge. Did it work before? Our tests will tell us so     lets get these tests working !!!!
+    
+    A1. // replaces any spaces in filename with a '+'
+          var space_replacer = decodeURIComponent(key.replace(/\s+/g, '+'));
+         
+         added this in from a challenge at end of first lesson, which was to remove all periods execpt for last one
+    A2. // replaces any "extra" periods in filename with '+'
+          var rogue_period_replacer = sourceKey.replace(/\.(?=.*\.)/g,'+') ;
+
+
+   
+  
