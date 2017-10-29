@@ -8,10 +8,15 @@ require('dotenv').config();
 //We require the aws node module so we can easly interact with Amazon's Api
 var AWS = require('aws-sdk');
 //We first need to start a new instance of Amazon's Elastic Transcoder that will transcode the video in to the correct formats and bit rate for a users given device
+
+AWS.config.loadFromPath('./config.json');
+
 var elasticTranscoder = new AWS.ElasticTranscoder({
  //**** Use an enviroment variable as not to upload any sensitive account credentials or information
     region: process.env.ELASTIC_TRANSCODER_REGION
 });
+
+
 
 exports.handler = function(event, context, callback){
     console.log('Welcome to Joes Super Cool Video Transcoder');
@@ -29,7 +34,9 @@ exports.handler = function(event, context, callback){
 
     // Having replaced all periods except for the very last one we can now remove the one for the extension as well so that we can have an output key which is the file name without an extension or non alphanumeric 
     var outputKey = rogue_period_replacer.split('.')[0];
-
+    var extension = rogue_period_replacer.split('.')[1];
+ 
+ 
     var params = {
      // Once again we want to use an environmental variable to ensure our secure account information is kept confidential
         PipelineId: process.env.ELASTIC_TRANSCODER_PIPELINE_ID,
@@ -53,11 +60,21 @@ exports.handler = function(event, context, callback){
                 PresetId: '1351620000001-100070' //Web Friendly 720p
             }
         ]};
-// We call upon the elasticTranscoder to create a job passing in the params that include the filename with along with the format and bit rate for it to be transcoded into a more awesome format 
-    elasticTranscoder.createJob(params, function(error, data){
+ 
+ 
+ //Currently checks for valid formats and if it is will submit to transcoder else will not need to make it delete from bucket yet, will add that once i start to upload from else where then S3 website.
+ if( extension == 'avi' || extension == 'mp4' || extension == 'mov'){ 
+  console.log("you sent vaild format");
+ elasticTranscoder.createJob(params, function(error, data){
         if (error){
             callback(error);
         }
         console.log('elasticTranscoder callback data: ' + JSON.stringify(data));
     });
+
+} else {
+
+console.log("Fuck that wasnt vaild");
+}
+// We call upon the elasticTranscoder to create a job passing in the params that include the filename with along with the format and bit rate for it to be transcoded into a more awesome format 
 };
