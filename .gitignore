@@ -1,5 +1,5 @@
 #gitignore file REMEMBER to list all the files you dont want to be public on github.
-
+config.json
 myeyesonly.txt
 .env
 video-transcoding-pipeline (pt-1)/lambda/node_modules/*
