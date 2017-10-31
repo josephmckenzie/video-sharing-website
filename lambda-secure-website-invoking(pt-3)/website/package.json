@@ -1,0 +1,18 @@
+{
+  "name": "teeceeandcoderstranscoder",
+  "version": "1.0.0",
+  "description": "The very cool Teecee and Coder Transcoder that made coder trans?!?",
+  "local-web-server": {
+    "port": 8100,
+    "forbid": "*.json"
+  },
+  "scripts": {
+    "start": "ws",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joseph Mckenzie",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "local-web-server": "^1.1.0"
+  }
+}

@@ -54,7 +54,15 @@ exports.handler = function(event, context, callback){
             {
                 Key: outputKey + '-web-720p' + '.mp4',
                 PresetId: '1351620000001-100070' //Web Friendly 720p
-            }
+            },
+            {
+             Key: outputKey + '-webm-720p' + '.webm',
+             PresetId: '1351620000001–100240' //Webm 720p
+            },
+            {
+             Key: outputKey + '-ts-HLSv3' + '.ts',
+             PresetId: '1351620000001–200010'
+            }             
         ]};
  
    var listObjectsparams = {

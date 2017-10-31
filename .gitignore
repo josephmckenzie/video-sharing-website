@@ -3,3 +3,10 @@ config.json
 myeyesonly.txt
 .env
 video-transcoding-pipeline (pt-1)/lambda/node_modules/*
+secure-website-for-transcoder-project(pt-2)/website/node_modules/
+pt-4/website/node_modules/
+pt-4/lambda/create-s3-upload-policy-document/node_modules/
+lambda-secure-website-invoking(pt-3)/website/node_modules/
+lambda-secure-website-invoking(pt-3)/lambda/user-profile/node_modules/
+lambda-secure-website-invoking(pt-3)/lambda/custom-authorizer/node_modules/
+*.pem

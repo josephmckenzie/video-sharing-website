@@ -1,0 +1,37 @@
+Here is where we will start to build our serverless website that will host out very awesome TnC transcoder.
+
+So our first stepis to goand register an account and setup some settings on auth0's site.
+
+   A. Go to https://auth0.com, Follow on screen instructions.
+   B. Make sure to choose "US" as the region.
+   C. Click next, fill out the needed information nad click on Create account.
+   D. Click on Clients inthe left panel and choose "Default App".
+   E. Then go to connections and make sure that Only username-password Authentication is enabled ( for me the default was on for google so disable that).
+   F. Go to settings in the default app menu, and inside of the textbox for ALLOWED Origins (CORS) enter http://localhost:8100 for the value.
+   G. Scroll down and click show advanced settings choose the Oauth menu and change "JsonWebToken Signature Algorithm" from RS256 to HS256.
+   H. Disable OIDC conformant option in the same section.
+   I. Scroll down and save settings, then scroll up to top and save the values for Domain,Client Id, and Client secret.
+   J.open up the config.js file and enter them values in the locations that ask for them.
+   K.go to the folder where you saved the files for this lesson (make sure its the one with the package.json file) and do a npm install to install all the modules you will need
+   L. Do a npm start, which will launch a local server and you can see whats up so far, go to http://localhost:8100
+   M. Not much to it now, but we will get there
+   
+   
+   --------------------------------------------------------------------------------------------------------------
+   
+   
+   Show off and show you skills and extend this.
+     A. Use Oauth to intergrate a 3rd part app login like facebook or google.
+     B. run these node.js rules on each user login
+       B1. Force email verification	(theres	a	pre-built	Auth0	rule for this very thing)
+       B2. Only	allow	users from a specific white-list
+     C. check this out for some cool stuff you can do using your IAM account and aws . 
+       C1. https://auth0.com/docs/integrations/aws
+     
+     
+   --- If you want to be a spoiled sport and npot even try to do these things on your own check out iamaspoiledsportandcheat.txt
+       -- Available soon
+
+     
+
+   

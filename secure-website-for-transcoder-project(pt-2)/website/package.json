@@ -1,0 +1,21 @@
+{
+  "name": "TeeceeandCodersTranscoder",
+  "version": "1.0.0",
+  "description": "An awesome place to go to get you Teecee and Coder videos transcoded and serve up the best format for the people that want to watch Teecee and Coder videos, Ie: ME, yes If this only ends up with me as a user I dont care cause why? Because TEECEE AND CODER thats why",
+  "local-web-server": {
+    "port": 8100,
+    "forbid": "*.json"
+  },
+  "scripts": {
+    "start": "ws",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joseph Mckenzie",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "local-web-server": "^1.1.0"
+  },
+  "dependencies": {
+    "auth0": "^2.8.0"
+  }
+}
